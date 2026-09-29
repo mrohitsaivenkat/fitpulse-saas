@@ -1,0 +1,6 @@
+{
+  "name": "FitPulse SaaS - Multi-Tenant Fitness Coaching Platform",
+  "description": "An all-in-one multi-tenant fitness coaching SaaS platform empowering independent coaches to manage clients, diets, workouts, progress tracking, and transformations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

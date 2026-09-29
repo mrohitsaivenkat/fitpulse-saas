@@ -1,0 +1,552 @@
+{% extends "base.html" %}
+
+{% block title %}FitPulse SaaS - Multi-Tenant Fitness Coaching Platform{% endblock %}
+
+{% block content %}
+<!-- ==========================================================================
+     1. HERO SECTION
+     ========================================================================== -->
+<section class="hero-section">
+    <div class="hero-glow-bg" aria-hidden="true"></div>
+    <div class="hero-glow-secondary" aria-hidden="true"></div>
+    
+    <div class="container hero-grid">
+        <div class="hero-text-col">
+            <div class="hero-kicker">
+                <span class="hero-kicker-dot" aria-hidden="true"></span>
+                <span>Multi-Tenant Fitness Coaching SaaS</span>
+            </div>
+            
+            <h1 class="hero-headline">
+                Transform Your Coaching.<br>
+                <span class="gradient-text">Transform More Lives.</span>
+            </h1>
+            
+            <p class="hero-supporting-text">
+                An all-in-one fitness coaching platform that helps coaches manage clients, plans, progress, transformations and their growing coaching business with completely isolated, secure workspaces.
+            </p>
+            
+            <div class="hero-cta-group">
+                <a href="#cta" class="btn btn-primary btn-lg">Start as a Coach</a>
+                <a href="#tools" class="btn btn-secondary btn-lg">Explore Free Tools</a>
+                <a href="#coaches" class="btn btn-accent btn-lg">Find a Coach</a>
+            </div>
+            
+            <div class="hero-proof-row">
+                <div class="proof-item">
+                    <span class="proof-number">100%</span>
+                    <span class="proof-label">Tenant Isolation</span>
+                </div>
+                <span class="proof-separator" aria-hidden="true">/</span>
+                <div class="proof-item">
+                    <span class="proof-number">3 Free</span>
+                    <span class="proof-label">Public Tools</span>
+                </div>
+                <span class="proof-separator" aria-hidden="true">/</span>
+                <div class="proof-item">
+                    <span class="proof-number">Role-Based</span>
+                    <span class="proof-label">Access Control</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="hero-visual-col">
+            <div class="hero-visual-card">
+                <div class="hero-image-wrapper">
+                    <img src="{{ url_for('static', filename='images/hero.jpg') }}" 
+                         alt="Fitness coach instructing an athlete in a modern training facility"
+                         referrerpolicy="no-referrer"
+                         loading="eager">
+                    <div class="hero-floating-badge">
+                        <div>
+                            <div class="floating-badge-title">Dedicated Coach Workspace</div>
+                            <div class="floating-badge-subtitle">Private Diets · Workouts · Progress Analytics</div>
+                        </div>
+                        <div class="status-indicator">
+                            <span style="width: 6px; height: 6px; border-radius: 50%; background: var(--primary);" aria-hidden="true"></span>
+                            <span>Isolated</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================================================
+     2. PLATFORM FEATURES
+     ========================================================================== -->
+<section id="features" class="section section-alt">
+    <div class="container">
+        <div class="section-header text-center">
+            <span class="section-kicker">Core SaaS Architecture</span>
+            <h2 class="section-title">Built Exclusively for Independent Fitness Coaches</h2>
+            <p class="section-subtitle">
+                Run your entire online and in-person fitness business on one unified platform. Each coach gets their own private workspace with complete data segregation.
+            </p>
+        </div>
+
+        <div class="features-grid">
+            <!-- Feature 1: Multi-Tenant Workspace -->
+            <div class="feature-card span-7">
+                <div class="feature-icon-wrapper">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="3" y1="9" x2="21" y2="9"></line>
+                        <line x1="9" y1="21" x2="9" y2="9"></line>
+                    </svg>
+                </div>
+                <h3 class="feature-title">Guaranteed Multi-Tenant Isolation</h3>
+                <p class="feature-description">
+                    Coach A never sees Coach B's clients, diets, or revenue. Tenant segregation is strictly enforced at the database and backend routing levels using dedicated foreign keys and role validation.
+                </p>
+                <div class="feature-tags">
+                    <span>Zero Data Leakage</span>
+                    <span aria-hidden="true">·</span>
+                    <span>Backend Enforced</span>
+                    <span aria-hidden="true">·</span>
+                    <span>Role-Based Access</span>
+                </div>
+            </div>
+
+            <!-- Feature 2: Private Diet System -->
+            <div class="feature-card span-5">
+                <div class="feature-icon-wrapper coral">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+                        <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+                        <line x1="6" y1="1" x2="6" y2="4"></line>
+                        <line x1="10" y1="1" x2="10" y2="4"></line>
+                        <line x1="14" y1="1" x2="14" y2="4"></line>
+                    </svg>
+                </div>
+                <h3 class="feature-title">Private Macro & Diet Engine</h3>
+                <p class="feature-description">
+                    Construct structured meal plans across Breakfast, Mid-Morning, Lunch, Pre/Post-workout, and Dinner with precise calorie and macronutrient targets.
+                </p>
+                <div class="feature-tags">
+                    <span>Gram-level Macros</span>
+                    <span aria-hidden="true">·</span>
+                    <span>Client Only Access</span>
+                </div>
+            </div>
+
+            <!-- Feature 3: Workout Programming -->
+            <div class="feature-card span-5">
+                <div class="feature-icon-wrapper cyan">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="6" y1="5" x2="6" y2="19"></line>
+                        <line x1="18" y1="5" x2="18" y2="19"></line>
+                        <line x1="6" y1="12" x2="18" y2="12"></line>
+                    </svg>
+                </div>
+                <h3 class="feature-title">Workout Programming & Overload</h3>
+                <p class="feature-description">
+                    Design training blocks with sets, rep ranges, rest intervals, exercise modifications, and trainer instructions tailored to individual fitness levels.
+                </p>
+                <div class="feature-tags">
+                    <span>Exercise Progression</span>
+                    <span aria-hidden="true">·</span>
+                    <span>Modifications</span>
+                </div>
+            </div>
+
+            <!-- Feature 4: Progress & Check-ins -->
+            <div class="feature-card span-7">
+                <div class="feature-icon-wrapper purple">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                    </svg>
+                </div>
+                <h3 class="feature-title">Intelligent Progress Tracking & Consent-Based Photos</h3>
+                <p class="feature-description">
+                    Log body measurements, weight trends with Chart.js curves, and private progress photos. Transformations remain 100% private until clients grant explicit publication consent.
+                </p>
+                <div class="feature-tags">
+                    <span>Explicit Consent Flow</span>
+                    <span aria-hidden="true">·</span>
+                    <span>Trend Curves</span>
+                    <span aria-hidden="true">·</span>
+                    <span>Private by Default</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================================================
+     3. FREE PUBLIC TOOLS SECTION (100% FREE)
+     ========================================================================== -->
+<section id="tools" class="section">
+    <div class="container">
+        <div class="section-header text-center">
+            <div class="free-tools-header-banner">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+                <span>100% FREE PUBLIC TOOLS — NO ACCOUNT REQUIRED</span>
+            </div>
+            <h2 class="section-title">Evidence-Based Tools for Everyday Athletes</h2>
+            <p class="section-subtitle">
+                Explore free nutritional swaps, educational injury safety guides, and historical pattern analysis designed to empower healthy decision-making.
+            </p>
+        </div>
+
+        <div class="tools-grid">
+            <!-- Tool 1: Food Alternatives -->
+            <div class="tool-card">
+                <div class="tool-card-media">
+                    <img src="{{ url_for('static', filename='images/nutrition.jpg') }}" 
+                         alt="Healthy meal preparation ingredients bowl" 
+                         referrerpolicy="no-referrer">
+                    <span class="tool-card-badge">100% FREE</span>
+                </div>
+                <div class="tool-card-body">
+                    <h3 class="tool-card-title">Food Alternatives Finder</h3>
+                    <p class="tool-card-desc">
+                        Craving burgers, pizza, or ice cream? Discover nutrient-dense alternatives that satisfy food cravings while keeping your fitness targets on track.
+                    </p>
+                    <a href="#interactive-food-demo" class="btn btn-outline-primary btn-sm">Try Interactive Demo</a>
+                </div>
+            </div>
+
+            <!-- Tool 2: Diet & Progress Analyzer -->
+            <div class="tool-card">
+                <div class="tool-card-media">
+                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #132438 0%, #0d1a29 100%); display: flex; align-items: center; justify-content: center;">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="1.5">
+                            <line x1="18" y1="20" x2="18" y2="10"></line>
+                            <line x1="12" y1="20" x2="12" y2="4"></line>
+                            <line x1="6" y1="20" x2="6" y2="14"></line>
+                        </svg>
+                    </div>
+                    <span class="tool-card-badge">100% FREE</span>
+                </div>
+                <div class="tool-card-body">
+                    <h3 class="tool-card-title">Diet & Progress Analyzer</h3>
+                    <p class="tool-card-desc">
+                        Analyze historical tracking data to uncover possible plateau patterns, weekend intake drift, and protein inconsistencies without generic calorie calculators.
+                    </p>
+                    <span class="btn btn-secondary btn-sm" style="opacity: 0.85;">Phase 9 Module</span>
+                </div>
+            </div>
+
+            <!-- Tool 3: Injury & Exercise Guide -->
+            <div class="tool-card">
+                <div class="tool-card-media">
+                    <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #271b2d 0%, #15111d 100%); display: flex; align-items: center; justify-content: center;">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="1.5">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                    </div>
+                    <span class="tool-card-badge">100% FREE</span>
+                </div>
+                <div class="tool-card-body">
+                    <h3 class="tool-card-title">Injury & Exercise Guide</h3>
+                    <p class="tool-card-desc">
+                        Educational joint safety guides for knee, shoulder, and back. Includes medical red-flag screenings that recommend clinical evaluation when warning signs exist.
+                    </p>
+                    <span class="btn btn-secondary btn-sm" style="opacity: 0.85;">Phase 9 Module</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interactive Instant Demo Box -->
+        <div id="interactive-food-demo" class="interactive-demo-container">
+            <div class="demo-box-header">
+                <div class="demo-title-group">
+                    <h3>Interactive Demo: Smart Food Swaps</h3>
+                    <p>Test the tool live right now — select a craving or search any typical high-calorie meal:</p>
+                </div>
+                <span class="demo-tag" style="margin: 0;">LIVE TOOL PREVIEW</span>
+            </div>
+
+            <div class="demo-search-bar">
+                <input type="text" id="foodSearchInput" class="demo-input" placeholder="Search craving (e.g. burger, pizza, ice cream, chips)..." value="burger">
+                <button type="button" id="foodSearchBtn" class="btn btn-primary">Find Alternative</button>
+            </div>
+
+            <div class="demo-chip-list">
+                <span class="demo-chip-label">Quick Suggestions:</span>
+                <button type="button" class="filter-chip active" data-value="burger">Burger</button>
+                <button type="button" class="filter-chip" data-value="pizza">Pizza</button>
+                <button type="button" class="filter-chip" data-value="fried chicken">Fried Chicken</button>
+                <button type="button" class="filter-chip" data-value="ice cream">Ice Cream</button>
+                <button type="button" class="filter-chip" data-value="chips">Potato Chips</button>
+                <button type="button" class="filter-chip" data-value="soft drinks">Soft Drinks</button>
+            </div>
+
+            <div id="demoResultCard" class="demo-result-card">
+                <!-- Populated dynamically via main.js -->
+            </div>
+
+            <p class="demo-disclaimer">
+                Educational notice: Nutritional estimates are general calculations for informational purposes. They do not constitute individualized medical or dietary prescriptions.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================================================
+     4. FEATURED TRANSFORMATIONS (DEMO DATA LABELED)
+     ========================================================================== -->
+<section id="transformations" class="section section-alt">
+    <div class="container">
+        <div class="section-header text-center">
+            <span class="section-kicker">Client Results</span>
+            <h2 class="section-title">Verified Athlete Transformations <span class="demo-tag">DEMO DATA</span></h2>
+            <p class="section-subtitle">
+                All client transformations on FitPulse require signed explicit consent. In Phase 1, sample showcase entries illustrate the client progress presentation.
+            </p>
+        </div>
+
+        <div class="transformations-grid">
+            <!-- Transformation 1 -->
+            <div class="trans-card">
+                <div class="trans-image-container">
+                    <img src="{{ url_for('static', filename='images/showcase.jpg') }}" 
+                         alt="Athlete transformation demo showcasing healthy strength gains" 
+                         referrerpolicy="no-referrer">
+                    <div class="trans-meta-overlay">
+                        <span class="trans-client-name">Marcus T. (Consent: First Name)</span>
+                        <span class="trans-duration">16 Weeks</span>
+                    </div>
+                </div>
+                <div class="trans-body">
+                    <div class="trans-stat-row">
+                        <span class="trans-stat-label">Starting Bodyweight</span>
+                        <span class="trans-stat-value">94.0 kg</span>
+                    </div>
+                    <div class="trans-stat-row">
+                        <span class="trans-stat-label">Current Bodyweight</span>
+                        <span class="trans-stat-value">83.5 kg (-10.5 kg)</span>
+                    </div>
+                    <div class="trans-stat-row">
+                        <span class="trans-stat-label">Primary Objective</span>
+                        <span class="trans-stat-value">Recomposition & Stamina</span>
+                    </div>
+                    <p class="trans-quote">
+                        "The structured check-ins and direct feedback from my coach kept me consistent when life got busy."
+                    </p>
+                    <div class="trans-coach-attribution">
+                        Coached by <span class="trans-coach-name">Coach David Miller</span> · IronPeak Fitness
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transformation 2 -->
+            <div class="trans-card">
+                <div class="trans-image-container">
+                    <img src="{{ url_for('static', filename='images/hero.jpg') }}" 
+                         alt="Client strength training transformation" 
+                         referrerpolicy="no-referrer">
+                    <div class="trans-meta-overlay">
+                        <span class="trans-client-name">Elena R. (Consent: Initials)</span>
+                        <span class="trans-duration">24 Weeks</span>
+                    </div>
+                </div>
+                <div class="trans-body">
+                    <div class="trans-stat-row">
+                        <span class="trans-stat-label">Starting Bodyweight</span>
+                        <span class="trans-stat-value">68.0 kg</span>
+                    </div>
+                    <div class="trans-stat-row">
+                        <span class="trans-stat-label">Current Bodyweight</span>
+                        <span class="trans-stat-value">62.0 kg (+ Lean Mass)</span>
+                    </div>
+                    <div class="trans-stat-row">
+                        <span class="trans-stat-label">Primary Objective</span>
+                        <span class="trans-stat-value">Powerlifting & Strength</span>
+                    </div>
+                    <p class="trans-quote">
+                        "My squat increased by 35kg while my waist measurement dropped 8cm. The app's macro tracker was effortless."
+                    </p>
+                    <div class="trans-coach-attribution">
+                        Coached by <span class="trans-coach-name">Coach Sarah Jenkins</span> · Apex Performance
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transformation 3 -->
+            <div class="trans-card">
+                <div class="trans-image-container">
+                    <img src="{{ url_for('static', filename='images/nutrition.jpg') }}" 
+                         alt="Nutrition transformation showcase" 
+                         referrerpolicy="no-referrer">
+                    <div class="trans-meta-overlay">
+                        <span class="trans-client-name">Anonymous Client (Consent: Hidden)</span>
+                        <span class="trans-duration">12 Weeks</span>
+                    </div>
+                </div>
+                <div class="trans-body">
+                    <div class="trans-stat-row">
+                        <span class="trans-stat-label">Starting Bodyweight</span>
+                        <span class="trans-stat-value">82.0 kg</span>
+                    </div>
+                    <div class="trans-stat-row">
+                        <span class="trans-stat-label">Current Bodyweight</span>
+                        <span class="trans-stat-value">75.0 kg (-7.0 kg)</span>
+                    </div>
+                    <div class="trans-stat-row">
+                        <span class="trans-stat-label">Primary Objective</span>
+                        <span class="trans-stat-value">Metabolic Health & Habit Fix</span>
+                    </div>
+                    <p class="trans-quote">
+                        "I broke a 2-year plateau by addressing weekend nutrition lapses spotted in the progress analyzer."
+                    </p>
+                    <div class="trans-coach-attribution">
+                        Coached by <span class="trans-coach-name">Coach Ryan Vance</span> · Velocity Athletics
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================================================
+     5. COACH DIRECTORY PREVIEW
+     ========================================================================== -->
+<section id="coaches" class="section">
+    <div class="container">
+        <div class="section-header text-center">
+            <span class="section-kicker">Coach Discovery</span>
+            <h2 class="section-title">Find an Independent Fitness Professional <span class="demo-tag">DEMO DATA</span></h2>
+            <p class="section-subtitle">
+                Browse certified trainers, review their specialties, and connect directly for personalized online or in-person coaching.
+            </p>
+        </div>
+
+        <div class="coaches-preview-grid">
+            <!-- Coach 1 -->
+            <div class="coach-card">
+                <div class="coach-card-header">
+                    <div class="coach-avatar">DM</div>
+                    <div class="coach-identity">
+                        <h4>David Miller</h4>
+                        <div class="coach-gym">IronPeak Performance · Austin, TX</div>
+                    </div>
+                </div>
+                <div class="coach-specs">
+                    <span class="spec-badge">Body Recomposition</span>
+                    <span class="spec-badge">Strength Training</span>
+                    <span class="spec-badge">Online Coaching</span>
+                </div>
+                <p class="coach-bio">
+                    8+ years specializing in evidence-based resistance training, metabolic conditioning, and sustainable nutrition plans for busy executives.
+                </p>
+                <div class="coach-actions">
+                    <a href="#cta" class="btn btn-secondary btn-sm" style="flex: 1;">View Profile</a>
+                    <a href="#cta" class="btn btn-primary btn-sm" style="flex: 1;">Contact Coach</a>
+                </div>
+            </div>
+
+            <!-- Coach 2 -->
+            <div class="coach-card">
+                <div class="coach-card-header">
+                    <div class="coach-avatar" style="border-color: var(--secondary); color: var(--secondary);">SJ</div>
+                    <div class="coach-identity">
+                        <h4>Sarah Jenkins</h4>
+                        <div class="coach-gym">Apex Strength Lab · Denver, CO</div>
+                    </div>
+                </div>
+                <div class="coach-specs">
+                    <span class="spec-badge">Women's Fitness</span>
+                    <span class="spec-badge">Nutrition Coaching</span>
+                    <span class="spec-badge">Powerlifting</span>
+                </div>
+                <p class="coach-bio">
+                    Certified sports nutritionist and strength coach committed to injury-free progressive overload and empowering women in the weight room.
+                </p>
+                <div class="coach-actions">
+                    <a href="#cta" class="btn btn-secondary btn-sm" style="flex: 1;">View Profile</a>
+                    <a href="#cta" class="btn btn-primary btn-sm" style="flex: 1;">Contact Coach</a>
+                </div>
+            </div>
+
+            <!-- Coach 3 -->
+            <div class="coach-card">
+                <div class="coach-card-header">
+                    <div class="coach-avatar" style="border-color: var(--accent-cyan); color: var(--accent-cyan);">RV</div>
+                    <div class="coach-identity">
+                        <h4>Ryan Vance</h4>
+                        <div class="coach-gym">Velocity Endurance · Seattle, WA</div>
+                    </div>
+                </div>
+                <div class="coach-specs">
+                    <span class="spec-badge">Weight Loss</span>
+                    <span class="spec-badge">Sports Fitness</span>
+                    <span class="spec-badge">Mobility</span>
+                </div>
+                <p class="coach-bio">
+                    Former collegiate track athlete specializing in functional hypertrophy, marathon conditioning, and joint-friendly training routines.
+                </p>
+                <div class="coach-actions">
+                    <a href="#cta" class="btn btn-secondary btn-sm" style="flex: 1;">View Profile</a>
+                    <a href="#cta" class="btn btn-primary btn-sm" style="flex: 1;">Contact Coach</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================================================
+     6. WHY COACHES USE THIS PLATFORM
+     ========================================================================== -->
+<section id="why-us" class="section section-alt">
+    <div class="container">
+        <div class="section-header text-center">
+            <span class="section-kicker accent-coral">Platform Value</span>
+            <h2 class="section-title">Built for Coaches Who Value Independence</h2>
+            <p class="section-subtitle">
+                Stop wrestling with scattered WhatsApp chats, lost PDF diet sheets, and messy spreadsheets. FitPulse gives you a centralized SaaS workspace.
+            </p>
+        </div>
+
+        <div class="value-prop-grid">
+            <div class="value-item">
+                <div class="value-icon">🛡️</div>
+                <h4 class="value-title">True Workspace Privacy</h4>
+                <p class="value-desc">Your client lists, custom recipes, and pricing remain exclusively yours. Zero cross-coach visibility.</p>
+            </div>
+            <div class="value-item">
+                <div class="value-icon">⏱️</div>
+                <h4 class="value-title">Save 10+ Hours Weekly</h4>
+                <p class="value-desc">Standardized meal templates and workout schedules allow you to program weekly routines in minutes.</p>
+            </div>
+            <div class="value-item">
+                <div class="value-icon">📈</div>
+                <h4 class="value-title">Visual Retention</h4>
+                <p class="value-desc">Interactive Chart.js graphs keep clients motivated by visualizing trends in bodyweight and lifts over time.</p>
+            </div>
+            <div class="value-item">
+                <div class="value-icon">🤝</div>
+                <h4 class="value-title">Consent-First Showcase</h4>
+                <p class="value-desc">Collect transformation photos and verified reviews with ironclad client privacy authorization.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================================================
+     7. COACH SUBSCRIPTION CTA SECTION
+     ========================================================================== -->
+<section id="cta" class="section">
+    <div class="container">
+        <div class="cta-banner">
+            <div class="cta-banner-content">
+                <h2 class="cta-title">Ready to Professionalize Your Fitness Coaching Business?</h2>
+                <p class="cta-desc">
+                    Get your dedicated coach workspace. Manage unlimited diets, workouts, check-ins, and client transformations under your own brand.
+                </p>
+                <div class="cta-buttons">
+                    <a href="#features" class="btn btn-primary btn-lg">Explore Coach Features</a>
+                    <a href="#tools" class="btn btn-secondary btn-lg">Browse Free Public Tools</a>
+                </div>
+                <div style="margin-top: 1.5rem; font-size: 0.85rem; color: var(--text-muted);">
+                    Phase 1 Initial Launch · Tiered Coach Subscriptions Configurable in Database (Phase 11)
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

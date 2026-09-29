@@ -1,0 +1,63 @@
+# Python bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+
+# Environment variables & secrets
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+
+# Database files
+*.sqlite
+*.sqlite3
+*.db
+fitpulse_dev.db
+
+# Flask and instance folders
+instance/
+.webassets-cache
+
+# User uploads (Private tenant client data)
+static/uploads/*
+!static/uploads/.gitkeep
+
+# IDE & Editor caches
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Node / Preview caches
+node_modules/
+dist/
+.vite/
