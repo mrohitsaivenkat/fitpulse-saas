@@ -3,10 +3,16 @@
  * Handles interactive navigation, mobile menu, and interactive instant demo tools.
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+function initFitPulse() {
   initMobileNavigation();
   initFoodAlternativesDemo();
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initFitPulse);
+} else {
+  initFitPulse();
+}
 
 /**
  * Mobile Navigation Drawer & Toggle

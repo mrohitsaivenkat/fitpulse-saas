@@ -1,6 +1,6 @@
 """
-FitPulse Routes Package
+FitPulse SaaS Routes Package
 """
-from .public import public_bp
+from routes.public import public_bp
 
 __all__ = ["public_bp"]

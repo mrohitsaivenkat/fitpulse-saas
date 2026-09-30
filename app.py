@@ -1,5 +1,9 @@
+"""
+FitPulse SaaS - Application Factory
+Initializes Flask, SQLAlchemy, Flask-Migrate, and registers blueprints.
+"""
 import os
-from flask import Flask, render_template, jsonify
+from flask import Flask, jsonify, send_from_directory
 from config import config
 from models import db, migrate
 from routes import public_bp
@@ -13,7 +17,11 @@ def create_app(config_name=None):
     if config_name is None:
         config_name = os.getenv("FLASK_ENV", "development")
 
-    app = Flask(__name__)
+    app = Flask(
+        __name__,
+        static_folder="static",
+        static_url_path="/static"
+    )
     app.config.from_object(config.get(config_name, config["default"]))
 
     # Initialize Extensions
@@ -36,22 +44,22 @@ def create_app(config_name=None):
         response.headers["X-XSS-Protection"] = "1; mode=block"
         return response
 
-    # Global Error Handlers (No stack traces in production)
+    # Global Error Handlers (Clean JSON / standard status)
     @app.errorhandler(400)
     def bad_request(error):
-        return render_template("errors/400.html", error=error), 400
+        return jsonify({"error": "Bad Request", "status_code": 400}), 400
 
     @app.errorhandler(403)
     def forbidden(error):
-        return render_template("errors/403.html", error=error), 403
+        return jsonify({"error": "Forbidden - Access Denied", "status_code": 403}), 403
 
     @app.errorhandler(404)
     def not_found(error):
-        return render_template("errors/404.html", error=error), 404
+        return jsonify({"error": "Resource Not Found", "status_code": 404}), 404
 
     @app.errorhandler(500)
     def server_error(error):
-        return render_template("errors/500.html", error=error), 500
+        return jsonify({"error": "Internal Server Error", "status_code": 500}), 500
 
     return app
 
