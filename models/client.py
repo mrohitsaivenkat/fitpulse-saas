@@ -74,6 +74,52 @@ class Client(db.Model):
         lazy="select"
     )
 
+    # Phase 2C Tracking: Biometrics, Measurements & Photos
+    progress_records = db.relationship(
+        "Progress",
+        back_populates="client",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+        lazy="select"
+    )
+    measurements = db.relationship(
+        "Measurement",
+        back_populates="client",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+        lazy="select"
+    )
+    progress_photos = db.relationship(
+        "ProgressPhoto",
+        back_populates="client",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+        lazy="select"
+    )
+
+    # Phase 2C Social Proof & Consent
+    transformations = db.relationship(
+        "Transformation",
+        back_populates="client",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+        lazy="select"
+    )
+    transformation_consents = db.relationship(
+        "TransformationConsent",
+        back_populates="client",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+        lazy="select"
+    )
+    reviews = db.relationship(
+        "Review",
+        back_populates="client",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+        lazy="select"
+    )
+
     @property
     def age(self) -> int | None:
         """Calculate the client's current age from date_of_birth."""

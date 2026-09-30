@@ -1,12 +1,15 @@
 import os
 from pathlib import Path
-from dotenv import load_dotenv
 
 # Base directory of the application
 BASE_DIR = Path(__file__).resolve().parent
 
 # Load environment variables from .env file if it exists
-load_dotenv(BASE_DIR / ".env")
+try:
+    from dotenv import load_dotenv
+    load_dotenv(BASE_DIR / ".env")
+except ImportError:
+    pass
 
 
 class Config:
@@ -29,10 +32,14 @@ class Config:
             "pool_recycle": 300,
         }
 
-    # Upload Configurations
-    UPLOAD_FOLDER = BASE_DIR / os.getenv("UPLOAD_FOLDER", "static/uploads")
+    # Upload Configurations (Strictly separate from public static assets)
+    UPLOAD_FOLDER = BASE_DIR / os.getenv("UPLOAD_FOLDER", "uploads")
     MAX_CONTENT_LENGTH = int(os.getenv("MAX_CONTENT_LENGTH_MB", 16)) * 1024 * 1024  # 16 MB max
     ALLOWED_IMAGE_EXTENSIONS = {"png", "jpg", "jpeg", "webp"}
+
+    # CSRF & Security Settings
+    WTF_CSRF_ENABLED = True
+    WTF_CSRF_TIME_LIMIT = 3600
 
     # Security and Session Settings
     SESSION_COOKIE_HTTPONLY = True

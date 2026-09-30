@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Portal — FitPulse SaaS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body class="auth-body">
+    <div class="auth-page-wrapper">
+        <header class="auth-header-minimal">
+            <div style="display: flex; align-items: center; gap: 1.5rem;">
+                <a href="/" class="brand-logo" aria-label="FitPulse Home">
+                    <span class="brand-icon">FP</span>
+                    <span>Fit<span class="brand-highlight">Pulse</span></span>
+                </a>
+                <span class="auth-badge" style="background: rgba(99, 102, 241, 0.15); color: #818cf8; border-color: rgba(99, 102, 241, 0.3);">
+                    CLIENT PORTAL
+                </span>
+            </div>
+            <nav class="nav-links" style="display: flex; gap: 1rem; align-items: center;">
+                <a href="/client" class="nav-item" style="color: var(--secondary-bright);">My Portal</a>
+                <a href="#workouts" class="nav-item">My Workouts</a>
+                <a href="#diet" class="nav-item">My Diet</a>
+                <a href="#progress" class="nav-item">My Progress</a>
+                <a href="#profile" class="nav-item">Profile</a>
+                <a href="/logout" class="btn btn-outline-primary btn-sm">Sign Out</a>
+            </nav>
+        </header>
+
+        <main class="auth-main-container" style="align-items: flex-start; padding-top: 2rem;">
+            <div class="container" style="max-width: 900px; width: 100%;">
+                <div class="auth-card" style="max-width: 100%; margin-bottom: 1.5rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+                        <div>
+                            <span class="auth-badge">ROLE: CLIENT ATHLETE</span>
+                            <h1 class="auth-title">Welcome, Marcus Turner</h1>
+                            <p class="auth-subtitle">Fitness Goal: <strong style="color: #fff;">Lean Bulk & Hypertrophy</strong> &bull; Coach: IronPeak Performance</p>
+                        </div>
+                        <a href="/logout" class="btn btn-outline-primary btn-sm">Sign Out</a>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.25rem;">
+                    <div class="auth-card" style="padding: 1.5rem;">
+                        <h3 style="color: var(--primary-bright); font-size: 1.1rem; margin-bottom: 0.5rem;">Assigned Training</h3>
+                        <p style="color: var(--text-on-dark-secondary); font-size: 0.9rem;">View your custom daily workout schedule, exercises, sets, and reps.</p>
+                    </div>
+                    <div class="auth-card" style="padding: 1.5rem;">
+                        <h3 style="color: var(--secondary-bright); font-size: 1.1rem; margin-bottom: 0.5rem;">Nutrition Plan</h3>
+                        <p style="color: var(--text-on-dark-secondary); font-size: 0.9rem;">Review daily calorie and macro breakdowns prescribed by your coach.</p>
+                    </div>
+                    <div class="auth-card" style="padding: 1.5rem;">
+                        <h3 style="color: var(--accent-cyan); font-size: 1.1rem; margin-bottom: 0.5rem;">Biometrics & Log</h3>
+                        <p style="color: var(--text-on-dark-secondary); font-size: 0.9rem;">Track weigh-ins, body tape measurements, and private progress photos.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

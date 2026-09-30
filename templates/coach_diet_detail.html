@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ plan.name }} — Diet Protocol — FitPulse SaaS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <style>
+        .nav-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-on-dark-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            transition: color 0.2s;
+        }
+        .nav-back:hover {
+            color: var(--secondary-bright);
+        }
+        .plan-header-card {
+            background: var(--bg-dark-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+        .macro-comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .macro-stat-card {
+            background: var(--bg-dark-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+        }
+        .macro-stat-label {
+            font-size: 0.8rem;
+            color: var(--text-on-dark-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.35rem;
+        }
+        .macro-stat-target {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #fff;
+        }
+        .macro-stat-actual {
+            font-size: 0.85rem;
+            color: var(--text-on-dark-secondary);
+            margin-top: 0.25rem;
+        }
+        .meal-group-card {
+            background: var(--bg-dark-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        .meal-group-header {
+            background: rgba(15, 23, 42, 0.7);
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+        .meal-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .meal-table th {
+            text-align: left;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-on-dark-secondary);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .meal-table td {
+            padding: 0.85rem 1.5rem;
+            font-size: 0.9rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+        .meal-table tr:last-child td {
+            border-bottom: none;
+        }
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
+            z-index: 999;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-card {
+            background: var(--bg-dark-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+        }
+        .filter-input {
+            width: 100%;
+            background: var(--bg-dark-surface);
+            border: 1px solid var(--border-subtle);
+            color: #fff;
+            padding: 0.6rem 1rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+        }
+        .filter-input:focus {
+            outline: none;
+            border-color: var(--secondary-bright);
+        }
+    </style>
+</head>
+<body class="auth-body">
+    <div class="auth-page-wrapper">
+        <header class="auth-header-minimal">
+            <div style="display: flex; align-items: center; gap: 1.5rem;">
+                <a href="/" class="brand-logo" aria-label="FitPulse Home">
+                    <span class="brand-icon">FP</span>
+                    <span>Fit<span class="brand-highlight">Pulse</span></span>
+                </a>
+                <span class="auth-badge auth-badge-coral">COACH WORKSPACE</span>
+            </div>
+            <nav class="nav-links" style="display: flex; gap: 1rem; align-items: center;">
+                <a href="/coach" class="nav-item">Overview</a>
+                <a href="/coach/clients" class="nav-item">Clients</a>
+                <a href="/coach/diets" class="nav-item" style="color: var(--secondary-bright); font-weight: 600;">Diet Protocols</a>
+                <a href="/coach#workouts" class="nav-item">Workouts</a>
+                <a href="/logout" class="btn btn-outline-primary btn-sm">Sign Out</a>
+            </nav>
+        </header>
+
+        <main class="auth-main-container" style="align-items: flex-start; padding: 2rem 1.5rem;">
+            <div class="container" style="max-width: 1100px; width: 100%;">
+
+                <a href="/coach/diets" class="nav-back">
+                    &larr; Back to Diet Protocols
+                </a>
+
+                <!-- Plan Header -->
+                <div class="plan-header-card">
+                    <div>
+                        <div style="display: flex; gap: 0.75rem; align-items: center; margin-bottom: 0.5rem;">
+                            <span class="plan-badge {% if plan.is_active %}badge-active{% else %}badge-inactive{% endif %}">
+                                {{ "ACTIVE PROTOCOL" if plan.is_active else "INACTIVE / ARCHIVED" }}
+                            </span>
+                            <span style="color: var(--text-on-dark-secondary); font-size: 0.85rem;">
+                                👤 Athlete: <strong style="color: #fff;">{{ plan.client.user.full_name if (plan.client and plan.client.user) else "Athlete #" ~ plan.client_id }}</strong>
+                            </span>
+                        </div>
+                        <h1 style="color: #fff; font-size: 1.75rem; margin-bottom: 0.35rem;">
+                            {{ plan.name }}
+                        </h1>
+                        {% if plan.description %}
+                            <p style="color: var(--text-on-dark-secondary); font-size: 0.95rem; max-width: 650px; line-height: 1.5;">
+                                {{ plan.description }}
+                            </p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Actions -->
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
+                        <button class="btn btn-primary btn-sm" onclick="openAddItemModal()">
+                            + Add Food Item
+                        </button>
+                        <button class="btn btn-outline-primary btn-sm" onclick="openEditPlanModal()">
+                            ✎ Edit Targets
+                        </button>
+                        <form method="POST" action="/coach/diets/{{ plan.id }}/toggle-status" style="margin: 0;">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" class="btn btn-secondary btn-sm" onclick="return confirm('Toggle status for this diet plan?');">
+                                {{ "Archive Plan" if plan.is_active else "Reactivate Plan" }}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Targets vs Actual Comparison Grid -->
+                <div class="macro-comparison-grid">
+                    <div class="macro-stat-card">
+                        <div class="macro-stat-label">Daily Calories</div>
+                        <div class="macro-stat-target" style="color: var(--secondary-bright);">
+                            {{ plan.daily_calorie_target or "—" }} <span style="font-size: 0.85rem; font-weight: normal; color: var(--text-on-dark-secondary);">kcal target</span>
+                        </div>
+                        <div class="macro-stat-actual">
+                            Food Sum: <strong style="color: #fff;">{{ nutrition.actual_totals.calories }} kcal</strong>
+                            {% if nutrition.delta.calories is not none %}
+                                <span style="color: {% if nutrition.delta.calories > 0 %}#f43f5e{% elif nutrition.delta.calories < 0 %}#06b6d4{% else %}#10b981{% endif %}; font-size: 0.8rem; margin-left: 0.25rem;">
+                                    ({{ "+" if nutrition.delta.calories > 0 else "" }}{{ nutrition.delta.calories }})
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="macro-stat-card">
+                        <div class="macro-stat-label">Protein</div>
+                        <div class="macro-stat-target">
+                            {{ plan.protein_target ~ "g" if plan.protein_target else "—" }} <span style="font-size: 0.85rem; font-weight: normal; color: var(--text-on-dark-secondary);">target</span>
+                        </div>
+                        <div class="macro-stat-actual">
+                            Food Sum: <strong style="color: #fff;">{{ nutrition.actual_totals.protein }}g</strong>
+                            {% if nutrition.delta.protein is not none %}
+                                <span style="color: {% if nutrition.delta.protein > 0 %}#f43f5e{% elif nutrition.delta.protein < 0 %}#06b6d4{% else %}#10b981{% endif %}; font-size: 0.8rem; margin-left: 0.25rem;">
+                                    ({{ "+" if nutrition.delta.protein > 0 else "" }}{{ nutrition.delta.protein }}g)
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="macro-stat-card">
+                        <div class="macro-stat-label">Carbohydrates</div>
+                        <div class="macro-stat-target">
+                            {{ plan.carbs_target ~ "g" if plan.carbs_target else "—" }} <span style="font-size: 0.85rem; font-weight: normal; color: var(--text-on-dark-secondary);">target</span>
+                        </div>
+                        <div class="macro-stat-actual">
+                            Food Sum: <strong style="color: #fff;">{{ nutrition.actual_totals.carbs }}g</strong>
+                            {% if nutrition.delta.carbs is not none %}
+                                <span style="color: {% if nutrition.delta.carbs > 0 %}#f43f5e{% elif nutrition.delta.carbs < 0 %}#06b6d4{% else %}#10b981{% endif %}; font-size: 0.8rem; margin-left: 0.25rem;">
+                                    ({{ "+" if nutrition.delta.carbs > 0 else "" }}{{ nutrition.delta.carbs }}g)
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="macro-stat-card">
+                        <div class="macro-stat-label">Fats</div>
+                        <div class="macro-stat-target">
+                            {{ plan.fat_target ~ "g" if plan.fat_target else "—" }} <span style="font-size: 0.85rem; font-weight: normal; color: var(--text-on-dark-secondary);">target</span>
+                        </div>
+                        <div class="macro-stat-actual">
+                            Food Sum: <strong style="color: #fff;">{{ nutrition.actual_totals.fat }}g</strong>
+                            {% if nutrition.delta.fat is not none %}
+                                <span style="color: {% if nutrition.delta.fat > 0 %}#f43f5e{% elif nutrition.delta.fat < 0 %}#06b6d4{% else %}#10b981{% endif %}; font-size: 0.8rem; margin-left: 0.25rem;">
+                                    ({{ "+" if nutrition.delta.fat > 0 else "" }}{{ nutrition.delta.fat }}g)
+                                </span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Meal Groups & Food Items -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h2 style="color: #fff; font-size: 1.25rem;">Prescribed Meals & Foods</h2>
+                    <button class="btn btn-outline-primary btn-sm" onclick="openAddItemModal()">
+                        + Add Meal / Food Item
+                    </button>
+                </div>
+
+                {% if grouped_meals and grouped_meals|length > 0 %}
+                    {% for m_name, meal in grouped_meals.items() %}
+                        <div class="meal-group-card">
+                            <div class="meal-group-header">
+                                <div style="display: flex; gap: 0.75rem; align-items: center;">
+                                    <h3 style="color: #fff; font-size: 1.05rem; margin: 0;">{{ m_name }}</h3>
+                                    {% if meal.meal_time %}
+                                        <span style="font-size: 0.8rem; background: rgba(255, 255, 255, 0.1); padding: 0.15rem 0.5rem; border-radius: 12px; color: var(--text-on-dark-secondary);">
+                                            ⏰ {{ meal.meal_time }}
+                                        </span>
+                                    {% endif %}
+                                </div>
+                                <div style="font-size: 0.85rem; color: var(--text-on-dark-secondary);">
+                                    Subtotal: <strong style="color: var(--secondary-bright);">{{ meal.subtotal_calories }} kcal</strong> &bull;
+                                    P: <strong>{{ meal.subtotal_protein }}g</strong> &bull;
+                                    C: <strong>{{ meal.subtotal_carbs }}g</strong> &bull;
+                                    F: <strong>{{ meal.subtotal_fat }}g</strong>
+                                </div>
+                            </div>
+
+                            <table class="meal-table">
+                                <thead>
+                                    <tr>
+                                        <th>Food Item</th>
+                                        <th>Portion</th>
+                                        <th>Calories</th>
+                                        <th>Protein</th>
+                                        <th>Carbs</th>
+                                        <th>Fat</th>
+                                        <th>Notes</th>
+                                        <th style="text-align: right;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in meal.items %}
+                                        <tr>
+                                            <td style="font-weight: 600;">{{ item.food_name }}</td>
+                                            <td>{{ item.quantity }} {{ item.unit }}</td>
+                                            <td style="color: var(--secondary-bright);">{{ item.calories or 0 }} kcal</td>
+                                            <td>{{ item.protein or 0 }}g</td>
+                                            <td>{{ item.carbohydrates or 0 }}g</td>
+                                            <td>{{ item.fat or 0 }}g</td>
+                                            <td style="color: var(--text-on-dark-secondary); font-size: 0.82rem;">{{ item.notes or "—" }}</td>
+                                            <td style="text-align: right;">
+                                                <div style="display: inline-flex; gap: 0.5rem;">
+                                                    <button class="btn btn-outline-primary btn-sm" style="padding: 0.2rem 0.5rem; font-size: 0.75rem;" onclick='openEditItemModal({{ item.id }}, {{ item.meal_name|tojson }}, {{ item.food_name|tojson }}, {{ item.quantity }}, {{ item.unit|tojson }}, {{ item.calories or 0 }}, {{ item.protein or 0 }}, {{ item.carbohydrates or 0 }}, {{ item.fat or 0 }}, {{ item.meal_time|tojson if item.meal_time else '""' }}, {{ item.notes|tojson if item.notes else '""' }})'>
+                                                        ✎ Edit
+                                                    </button>
+                                                    <form method="POST" action="/coach/diets/{{ plan.id }}/items/{{ item.id }}/delete" style="margin: 0; display: inline;">
+                                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                                        <button type="submit" class="btn btn-secondary btn-sm" style="padding: 0.2rem 0.5rem; font-size: 0.75rem;" onclick="return confirm('Remove {{ item.food_name }} from this plan?');">
+                                                            ✕
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <!-- Empty Food Items State -->
+                    <div class="auth-card" style="text-align: center; padding: 3rem 1.5rem;">
+                        <div style="font-size: 2.5rem; margin-bottom: 1rem;">🍽️</div>
+                        <h3 style="color: #fff; margin-bottom: 0.5rem;">No Food Items Added Yet</h3>
+                        <p style="color: var(--text-on-dark-secondary); max-width: 450px; margin: 0 auto 1.5rem;">
+                            Start populating this protocol by adding meals (Breakfast, Lunch, Dinner, Snack) with specific food items, portion quantities, and macro targets.
+                        </p>
+                        <button class="btn btn-primary" onclick="openAddItemModal()">
+                            + Add First Food Item
+                        </button>
+                    </div>
+                {% endif %}
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Item Modal -->
+    <div id="addItemModal" class="modal-overlay">
+        <div class="modal-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 1rem;">
+                <h2 style="color: #fff; font-size: 1.25rem;">Add Food Item to Protocol</h2>
+                <button type="button" onclick="closeAddItemModal()" style="background: none; border: none; color: var(--text-on-dark-secondary); font-size: 1.5rem; cursor: pointer;">&times;</button>
+            </div>
+
+            <form method="POST" action="/coach/diets/{{ plan.id }}/items">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                    <div>
+                        <label class="form-label" style="font-size: 0.85rem; color: #fff;">Meal Category *</label>
+                        <input type="text" name="meal_name" list="meal_suggestions" required class="filter-input" placeholder="e.g. Breakfast, Lunch, Dinner">
+                        <datalist id="meal_suggestions">
+                            <option value="Breakfast">
+                            <option value="Mid-Morning Snack">
+                            <option value="Lunch">
+                            <option value="Afternoon Snack">
+                            <option value="Pre-Workout">
+                            <option value="Post-Workout">
+                            <option value="Dinner">
+                            <option value="Evening Snack">
+                        </datalist>
+                    </div>
+                    <div>
+                        <label class="form-label" style="font-size: 0.85rem; color: #fff;">Meal Timing</label>
+                        <input type="text" name="meal_time" class="filter-input" placeholder="e.g. 08:00 AM, Post-Training">
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 1rem;">
+                    <label class="form-label" style="font-size: 0.85rem; color: #fff;">Food Name *</label>
+                    <input type="text" name="food_name" required class="filter-input" placeholder="e.g. Rolled Oats, Grilled Chicken Breast">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                    <div>
+                        <label class="form-label" style="font-size: 0.85rem; color: #fff;">Quantity *</label>
+                        <input type="number" step="0.1" name="quantity" required class="filter-input" placeholder="e.g. 80">
+                    </div>
+                    <div>
+                        <label class="form-label" style="font-size: 0.85rem; color: #fff;">Unit *</label>
+                        <input type="text" name="unit" list="unit_suggestions" required class="filter-input" placeholder="e.g. grams, ml, scoops, pieces">
+                        <datalist id="unit_suggestions">
+                            <option value="grams">
+                            <option value="ml">
+                            <option value="pieces">
+                            <option value="scoops">
+                            <option value="tbsp">
+                            <option value="cups">
+                        </datalist>
+                    </div>
+                </div>
+
+                <!-- Macros -->
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 1rem;">
+                    <div>
+                        <label class="form-label" style="font-size: 0.82rem; color: #fff;">Calories</label>
+                        <input type="number" name="calories" class="filter-input" placeholder="300">
+                    </div>
+                    <div>
+                        <label class="form-label" style="font-size: 0.82rem; color: #fff;">Protein (g)</label>
+                        <input type="number" step="0.1" name="protein" class="filter-input" placeholder="10">
+                    </div>
+                    <div>
+                        <label class="form-label" style="font-size: 0.82rem; color: #fff;">Carbs (g)</label>
+                        <input type="number" step="0.1" name="carbohydrates" class="filter-input" placeholder="50">
+                    </div>
+                    <div>
+                        <label class="form-label" style="font-size: 0.82rem; color: #fff;">Fat (g)</label>
+                        <input type="number" step="0.1" name="fat" class="filter-input" placeholder="6">
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <label class="form-label" style="font-size: 0.85rem; color: #fff;">Cooking Notes / Instructions</label>
+                    <input type="text" name="notes" class="filter-input" placeholder="e.g. Cook with water or almond milk, add cinnamon">
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 1rem; border-top: 1px solid var(--border-subtle); padding-top: 1.25rem;">
+                    <button type="button" class="btn btn-secondary" onclick="closeAddItemModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Food Item</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Item Modal -->
+    <div id="editItemModal" class="modal-overlay">
+        <div class="modal-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 1rem;">
+                <h2 style="color: #fff; font-size: 1.25rem;">Edit Food Item</h2>
+                <button type="button" onclick="closeEditItemModal()" style="background: none; border: none; color: var(--text-on-dark-secondary); font-size: 1.5rem; cursor: pointer;">&times;</button>
+            </div>
+
+            <form id="editItemForm" method="POST" action="">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                    <div>
+                        <label class="form-label" style="font-size: 0.85rem; color: #fff;">Meal Category *</label>
+                        <input type="text" id="edit_meal_name" name="meal_name" required class="filter-input">
+                    </div>
+                    <div>
+                        <label class="form-label" style="font-size: 0.85rem; color: #fff;">Meal Timing</label>
+                        <input type="text" id="edit_meal_time" name="meal_time" class="filter-input">
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 1rem;">
+                    <label class="form-label" style="font-size: 0.85rem; color: #fff;">Food Name *</label>
+                    <input type="text" id="edit_food_name" name="food_name" required class="filter-input">
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                    <div>
+                        <label class="form-label" style="font-size: 0.85rem; color: #fff;">Quantity *</label>
+                        <input type="number" step="0.1" id="edit_quantity" name="quantity" required class="filter-input">
+                    </div>
+                    <div>
+                        <label class="form-label" style="font-size: 0.85rem; color: #fff;">Unit *</label>
+                        <input type="text" id="edit_unit" name="unit" required class="filter-input">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 1rem;">
+                    <div>
+                        <label class="form-label" style="font-size: 0.82rem; color: #fff;">Calories</label>
+                        <input type="number" id="edit_calories" name="calories" class="filter-input">
+                    </div>
+                    <div>
+                        <label class="form-label" style="font-size: 0.82rem; color: #fff;">Protein (g)</label>
+                        <input type="number" step="0.1" id="edit_protein" name="protein" class="filter-input">
+                    </div>
+                    <div>
+                        <label class="form-label" style="font-size: 0.82rem; color: #fff;">Carbs (g)</label>
+                        <input type="number" step="0.1" id="edit_carbs" name="carbohydrates" class="filter-input">
+                    </div>
+                    <div>
+                        <label class="form-label" style="font-size: 0.82rem; color: #fff;">Fat (g)</label>
+                        <input type="number" step="0.1" id="edit_fat" name="fat" class="filter-input">
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <label class="form-label" style="font-size: 0.85rem; color: #fff;">Cooking Notes / Instructions</label>
+                    <input type="text" id="edit_notes" name="notes" class="filter-input">
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 1rem; border-top: 1px solid var(--border-subtle); padding-top: 1.25rem;">
+                    <button type="button" class="btn btn-secondary" onclick="closeEditItemModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Plan Details Modal -->
+    <div id="editPlanModal" class="modal-overlay">
+        <div class="modal-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-subtle); padding-bottom: 1rem;">
+                <h2 style="color: #fff; font-size: 1.25rem;">Edit Protocol Details</h2>
+                <button type="button" onclick="closeEditPlanModal()" style="background: none; border: none; color: var(--text-on-dark-secondary); font-size: 1.5rem; cursor: pointer;">&times;</button>
+            </div>
+
+            <form method="POST" action="/coach/diets/{{ plan.id }}/edit">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                <div style="margin-bottom: 1rem;">
+                    <label class="form-label" style="font-size: 0.85rem; color: #fff;">Plan Name *</label>
+                    <input type="text" name="name" value="{{ plan.name }}" required class="filter-input">
+                </div>
+
+                <div style="margin-bottom: 1rem;">
+                    <label class="form-label" style="font-size: 0.85rem; color: #fff;">Description / Instructions</label>
+                    <textarea name="description" rows="2" class="filter-input" style="resize: vertical;">{{ plan.description or '' }}</textarea>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.75rem; margin-bottom: 1rem;">
+                    <div>
+                        <label class="form-label" style="font-size: 0.82rem; color: #fff;">Calories (kcal)</label>
+                        <input type="number" name="daily_calorie_target" value="{{ plan.daily_calorie_target or '' }}" class="filter-input">
+                    </div>
+                    <div>
+                        <label class="form-label" style="font-size: 0.82rem; color: #fff;">Protein (g)</label>
+                        <input type="number" step="0.1" name="protein_target" value="{{ plan.protein_target if plan.protein_target is not none else '' }}" class="filter-input">
+                    </div>
+                    <div>
+                        <label class="form-label" style="font-size: 0.82rem; color: #fff;">Carbs (g)</label>
+                        <input type="number" step="0.1" name="carbs_target" value="{{ plan.carbs_target if plan.carbs_target is not none else '' }}" class="filter-input">
+                    </div>
+                    <div>
+                        <label class="form-label" style="font-size: 0.82rem; color: #fff;">Fat (g)</label>
+                        <input type="number" step="0.1" name="fat_target" value="{{ plan.fat_target if plan.fat_target is not none else '' }}" class="filter-input">
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div>
+                        <label class="form-label" style="font-size: 0.85rem; color: #fff;">Start Date</label>
+                        <input type="date" name="start_date" value="{{ plan.start_date.isoformat() if plan.start_date else '' }}" class="filter-input">
+                    </div>
+                    <div>
+                        <label class="form-label" style="font-size: 0.85rem; color: #fff;">End Date</label>
+                        <input type="date" name="end_date" value="{{ plan.end_date.isoformat() if plan.end_date else '' }}" class="filter-input">
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 1rem; border-top: 1px solid var(--border-subtle); padding-top: 1.25rem;">
+                    <button type="button" class="btn btn-secondary" onclick="closeEditPlanModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openAddItemModal() {
+            document.getElementById('addItemModal').classList.add('active');
+        }
+        function closeAddItemModal() {
+            document.getElementById('addItemModal').classList.remove('active');
+        }
+
+        function openEditPlanModal() {
+            document.getElementById('editPlanModal').classList.add('active');
+        }
+        function closeEditPlanModal() {
+            document.getElementById('editPlanModal').classList.remove('active');
+        }
+
+        function openEditItemModal(itemId, mealName, foodName, qty, unit, cal, prot, carbs, fat, mealTime, notes) {
+            const form = document.getElementById('editItemForm');
+            form.action = `/coach/diets/{{ plan.id }}/items/${itemId}/edit`;
+            document.getElementById('edit_meal_name').value = mealName || '';
+            document.getElementById('edit_meal_time').value = mealTime || '';
+            document.getElementById('edit_food_name').value = foodName || '';
+            document.getElementById('edit_quantity').value = qty || '';
+            document.getElementById('edit_unit').value = unit || '';
+            document.getElementById('edit_calories').value = cal || 0;
+            document.getElementById('edit_protein').value = prot || 0;
+            document.getElementById('edit_carbs').value = carbs || 0;
+            document.getElementById('edit_fat').value = fat || 0;
+            document.getElementById('edit_notes').value = notes || '';
+            document.getElementById('editItemModal').classList.add('active');
+        }
+        function closeEditItemModal() {
+            document.getElementById('editItemModal').classList.remove('active');
+        }
+
+        window.onclick = function(e) {
+            if (e.target.classList.contains('modal-overlay')) {
+                e.target.classList.remove('active');
+            }
+        };
+    </script>
+</body>
+</html>

@@ -76,6 +76,38 @@ class Coach(db.Model):
         lazy="select"
     )
 
+    # Social Proof & Outcomes: Transformations and Reviews
+    transformations = db.relationship(
+        "Transformation",
+        back_populates="coach",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+        lazy="select"
+    )
+    reviews = db.relationship(
+        "Review",
+        back_populates="coach",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+        lazy="select"
+    )
+
+    # Phase 2D SaaS Business & Platform Communication
+    subscriptions = db.relationship(
+        "Subscription",
+        back_populates="coach",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+        lazy="select"
+    )
+    support_tickets = db.relationship(
+        "SupportTicket",
+        back_populates="coach",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+        lazy="select"
+    )
+
     @property
     def total_clients_count(self) -> int:
         """Return the total number of enrolled clients in this coach's workspace."""

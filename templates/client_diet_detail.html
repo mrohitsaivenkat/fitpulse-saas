@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ plan.name }} — My Meal Plan — FitPulse SaaS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <style>
+        .nav-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-on-dark-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            transition: color 0.2s;
+        }
+        .nav-back:hover {
+            color: var(--secondary-bright);
+        }
+        .header-card {
+            background: var(--bg-dark-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        .targets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .target-card {
+            background: var(--bg-dark-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+        }
+        .target-title {
+            font-size: 0.8rem;
+            color: var(--text-on-dark-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.35rem;
+        }
+        .target-val {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #fff;
+        }
+        .meal-card {
+            background: var(--bg-dark-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        .meal-header {
+            background: rgba(15, 23, 42, 0.7);
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+        .meal-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .meal-table th {
+            text-align: left;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-on-dark-secondary);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .meal-table td {
+            padding: 0.85rem 1.5rem;
+            font-size: 0.9rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+        .meal-table tr:last-child td {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body class="auth-body">
+    <div class="auth-page-wrapper">
+        <header class="auth-header-minimal">
+            <div style="display: flex; align-items: center; gap: 1.5rem;">
+                <a href="/" class="brand-logo" aria-label="FitPulse Home">
+                    <span class="brand-icon">FP</span>
+                    <span>Fit<span class="brand-highlight">Pulse</span></span>
+                </a>
+                <span class="auth-badge" style="background: rgba(6, 182, 212, 0.15); color: var(--accent-cyan); border-color: rgba(6, 182, 212, 0.3);">
+                    CLIENT PORTAL
+                </span>
+            </div>
+            <nav class="nav-links" style="display: flex; gap: 1rem; align-items: center;">
+                <a href="/client" class="nav-item">Dashboard</a>
+                <a href="/client/diets" class="nav-item" style="color: var(--secondary-bright); font-weight: 600;">My Nutrition</a>
+                <a href="/client#workouts" class="nav-item">My Workouts</a>
+                <a href="/client#progress" class="nav-item">My Check-ins</a>
+                <a href="/logout" class="btn btn-outline-primary btn-sm">Sign Out</a>
+            </nav>
+        </header>
+
+        <main class="auth-main-container" style="align-items: flex-start; padding: 2rem 1.5rem;">
+            <div class="container" style="max-width: 950px; width: 100%;">
+
+                <a href="/client/diets" class="nav-back">
+                    &larr; Back to My Nutrition Protocols
+                </a>
+
+                <!-- Header Banner -->
+                <div class="header-card">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+                        <div>
+                            <span style="font-size: 0.75rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 20px; text-transform: uppercase; background: {% if plan.is_active %}rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3);{% else %}rgba(100, 116, 139, 0.15); color: #94a3b8; border: 1px solid rgba(100, 116, 139, 0.3);{% endif %}">
+                                {{ "ACTIVE PROTOCOL" if plan.is_active else "PREVIOUS PROTOCOL" }}
+                            </span>
+                            <h1 style="color: #fff; font-size: 1.85rem; margin-top: 0.4rem; margin-bottom: 0.35rem;">
+                                {{ plan.name }}
+                            </h1>
+                            <p style="color: var(--text-on-dark-secondary); font-size: 0.95rem; margin-bottom: 0.5rem;">
+                                Coach Prescribed: <strong style="color: #fff;">{{ plan.coach.business_name if plan.coach else "Your Coach" }}</strong>
+                            </p>
+                            {% if plan.description %}
+                                <p style="color: var(--text-on-dark-secondary); font-size: 0.9rem; line-height: 1.6; max-width: 700px;">
+                                    {{ plan.description }}
+                                </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Daily Macro Targets -->
+                <div class="targets-grid">
+                    <div class="target-card">
+                        <div class="target-title">Target Calories</div>
+                        <div class="target-val" style="color: var(--secondary-bright);">
+                            {{ plan.daily_calorie_target or "—" }} <span style="font-size: 0.85rem; font-weight: normal; color: var(--text-on-dark-secondary);">kcal</span>
+                        </div>
+                    </div>
+                    <div class="target-card">
+                        <div class="target-title">Daily Protein</div>
+                        <div class="target-val">
+                            {{ plan.protein_target ~ "g" if plan.protein_target else "—" }}
+                        </div>
+                    </div>
+                    <div class="target-card">
+                        <div class="target-title">Daily Carbs</div>
+                        <div class="target-val">
+                            {{ plan.carbs_target ~ "g" if plan.carbs_target else "—" }}
+                        </div>
+                    </div>
+                    <div class="target-card">
+                        <div class="target-title">Daily Fat</div>
+                        <div class="target-val">
+                            {{ plan.fat_target ~ "g" if plan.fat_target else "—" }}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Meals Schedule -->
+                <h2 style="color: #fff; font-size: 1.3rem; margin-bottom: 1rem;">Daily Meal Schedule</h2>
+
+                {% if grouped_meals and grouped_meals|length > 0 %}
+                    {% for m_name, meal in grouped_meals.items() %}
+                        <div class="meal-card">
+                            <div class="meal-header">
+                                <div style="display: flex; gap: 0.75rem; align-items: center;">
+                                    <h3 style="color: #fff; font-size: 1.1rem; margin: 0;">{{ m_name }}</h3>
+                                    {% if meal.meal_time %}
+                                        <span style="font-size: 0.8rem; background: rgba(255, 255, 255, 0.1); padding: 0.15rem 0.5rem; border-radius: 12px; color: var(--text-on-dark-secondary);">
+                                            ⏰ {{ meal.meal_time }}
+                                        </span>
+                                    {% endif %}
+                                </div>
+                                <div style="font-size: 0.85rem; color: var(--text-on-dark-secondary);">
+                                    Subtotal: <strong style="color: var(--secondary-bright);">{{ meal.subtotal_calories }} kcal</strong> &bull;
+                                    P: <strong>{{ meal.subtotal_protein }}g</strong> &bull;
+                                    C: <strong>{{ meal.subtotal_carbs }}g</strong> &bull;
+                                    F: <strong>{{ meal.subtotal_fat }}g</strong>
+                                </div>
+                            </div>
+
+                            <table class="meal-table">
+                                <thead>
+                                    <tr>
+                                        <th>Food Item</th>
+                                        <th>Portion</th>
+                                        <th>Calories</th>
+                                        <th>Protein</th>
+                                        <th>Carbs</th>
+                                        <th>Fat</th>
+                                        <th>Instructions / Notes</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in meal.items %}
+                                        <tr>
+                                            <td style="font-weight: 600;">{{ item.food_name }}</td>
+                                            <td style="color: var(--accent-cyan); font-weight: 600;">{{ item.quantity }} {{ item.unit }}</td>
+                                            <td style="color: var(--secondary-bright);">{{ item.calories or 0 }} kcal</td>
+                                            <td>{{ item.protein or 0 }}g</td>
+                                            <td>{{ item.carbohydrates or 0 }}g</td>
+                                            <td>{{ item.fat or 0 }}g</td>
+                                            <td style="color: var(--text-on-dark-secondary); font-size: 0.82rem;">{{ item.notes or "—" }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endfor %}
+
+                    <!-- Day Totals Summary -->
+                    <div class="auth-card" style="margin-top: 2rem; background: rgba(15, 23, 42, 0.8); border: 1px solid var(--border-subtle);">
+                        <h4 style="color: #fff; margin-bottom: 0.5rem; font-size: 1rem;">Calculated Full-Day Food Totals</h4>
+                        <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; font-size: 0.9rem; color: var(--text-on-dark-secondary);">
+                            <span>Total Food Calories: <strong style="color: var(--secondary-bright);">{{ nutrition.actual_totals.calories }} kcal</strong></span>
+                            <span>Total Protein: <strong style="color: #fff;">{{ nutrition.actual_totals.protein }}g</strong></span>
+                            <span>Total Carbohydrates: <strong style="color: #fff;">{{ nutrition.actual_totals.carbs }}g</strong></span>
+                            <span>Total Fat: <strong style="color: #fff;">{{ nutrition.actual_totals.fat }}g</strong></span>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="auth-card" style="text-align: center; padding: 3rem 1.5rem;">
+                        <p style="color: var(--text-on-dark-secondary);">
+                            Your coach has created the outline for this protocol, but specific food items have not been added yet.
+                        </p>
+                    </div>
+                {% endif %}
+
+            </div>
+        </main>
+    </div>
+</body>
+</html>

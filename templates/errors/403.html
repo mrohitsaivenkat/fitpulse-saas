@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>403 Forbidden — FitPulse SaaS</title>
+    <meta name="description" content="Access Denied. You do not have permission to access this resource.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body class="auth-body">
+    <div class="auth-page-wrapper">
+        <header class="auth-header-minimal">
+            <a href="/" class="brand-logo" aria-label="FitPulse Home">
+                <span class="brand-icon">FP</span>
+                <span>Fit<span class="brand-highlight">Pulse</span></span>
+            </a>
+            <a href="/" class="auth-back-link">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                Return to Home
+            </a>
+        </header>
+
+        <main class="auth-main-container">
+            <div class="auth-card" style="text-align: center;">
+                <span class="auth-badge auth-badge-coral">HTTP 403 FORBIDDEN</span>
+                <div class="error-code" style="font-size: 5rem; color: var(--secondary-bright); margin-bottom: 0.5rem;">403</div>
+                <h1 class="auth-title">Access Denied</h1>
+                <p class="auth-subtitle" style="margin-bottom: 1.75rem;">
+                    {{ message or "You do not have the required role permissions to access this platform resource." }}
+                </p>
+
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    {% if user and user.role == 'COACH' %}
+                    <a href="/coach" class="btn btn-primary btn-block">Go to Coach Workspace</a>
+                    {% elif user and user.role == 'CLIENT' %}
+                    <a href="/client" class="btn btn-primary btn-block">Go to Client Portal</a>
+                    {% elif user and user.role == 'SUPER_ADMIN' %}
+                    <a href="/admin" class="btn btn-primary btn-block">Go to Admin Overview</a>
+                    {% else %}
+                    <a href="/login" class="btn btn-primary btn-block">Sign In with Appropriate Account</a>
+                    {% endif %}
+                    <a href="/" class="btn btn-outline-primary btn-block">Return to Homepage</a>
+                </div>
+
+                <div class="auth-card-footer">
+                    <p>Signed in as: <strong style="color: #ffffff;">{{ user.email if user else 'Anonymous' }}</strong> ({{ user.role if user else 'None' }})</p>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

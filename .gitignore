@@ -46,6 +46,8 @@ instance/
 .webassets-cache
 
 # User uploads (Private tenant client data)
+uploads/*
+!uploads/.gitkeep
 static/uploads/*
 !static/uploads/.gitkeep
 

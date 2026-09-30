@@ -61,10 +61,81 @@ class User(db.Model):
         passive_deletes=True
     )
 
+    # Phase 2D Relationships: Notifications, Support & Auditing
+    notifications = db.relationship(
+        "Notification",
+        back_populates="user",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+        lazy="select"
+    )
+    support_tickets = db.relationship(
+        "SupportTicket",
+        back_populates="user",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+        lazy="select"
+    )
+    audit_logs = db.relationship(
+        "AuditLog",
+        back_populates="user",
+        lazy="select"
+    )
+
     @property
     def full_name(self) -> str:
         """Return the user's formatted full name."""
         return f"{self.first_name} {self.last_name}".strip()
+
+    # Flask-Login Interface Compatibility
+    @property
+    def is_authenticated(self) -> bool:
+        """Return True if the user is authenticated."""
+        return True
+
+    @property
+    def is_anonymous(self) -> bool:
+        """Return False for real users."""
+        return False
+
+    def get_id(self) -> str:
+        """Return unique string identifier for Flask-Login session storage."""
+        return str(self.id)
+
+    # Role Helpers for RBAC (Phase 3B)
+    @property
+    def is_super_admin(self) -> bool:
+        """Return True if the user holds the platform SUPER_ADMIN role."""
+        return self.role == UserRole.SUPER_ADMIN.value
+
+    @property
+    def is_coach(self) -> bool:
+        """Return True if the user is a registered COACH."""
+        return self.role == UserRole.COACH.value
+
+    @property
+    def is_client(self) -> bool:
+        """Return True if the user is an enrolled CLIENT."""
+        return self.role == UserRole.CLIENT.value
+
+    def has_role(self, *roles) -> bool:
+        """
+        Authoritative server-side role check.
+        Returns True if the user's role matches any of the supplied roles.
+        """
+        role_values = [r.value if isinstance(r, UserRole) else str(r).upper() for r in roles]
+        return self.role.upper() in role_values
+
+    # Secure Password Handling
+    def set_password(self, password: str) -> None:
+        """Generate and store a secure cryptographic hash of the password."""
+        from services.auth_service import hash_password
+        self.password_hash = hash_password(password)
+
+    def check_password(self, password: str) -> bool:
+        """Verify the candidate password against the stored cryptographic hash."""
+        from services.auth_service import verify_password
+        return verify_password(self.password_hash, password)
 
     def to_dict(self, include_sensitive: bool = False) -> dict:
         """
